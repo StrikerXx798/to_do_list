@@ -13,13 +13,15 @@ class App extends React.Component {
         {title: "React", isDone: false, priority: "high"}
     ];
 
+    filterValue = "Completed";
+
     render = () => {
         return (
             <div className="App">
                 <div className="todoList">
                     <TodoListHeader />
                     <TodoListTasks tasks = {this.tasks}/>
-                    <TodoListFooter filterValue = {"Completed"}/>
+                    <TodoListFooter filterValue = {this.filterValue}/>
                 </div>
             </div>
         );
