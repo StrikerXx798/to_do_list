@@ -1,25 +1,14 @@
 import React from "react";
+import TodoListTask from "./TodoListTask";
 
 class TodoListTasks extends React.Component {
-    render = () => {
+    render = (props) => {
         return (
             <div className="todoList-tasks">
-                <div className="todoList-task">
-                    <input type="checkbox" checked={true}/>
-                    <span>CSS</span>
-                </div>
-                <div className="todoList-task">
-                    <input type="checkbox" checked={false}/>
-                    <span>JS</span>
-                </div>
-                <div className="todoList-task">
-                    <input type="checkbox" checked={false}/>
-                    <span>ReactJS</span>
-                </div>
-                <div className="todoList-task">
-                    <input type="checkbox" checked={true}/>
-                    <span>Patterns</span>
-                </div>
+                <TodoListTask title = "JS" isDone = {true} />
+                <TodoListTask title = "HTML" isDone = {true} />
+                <TodoListTask title = "CSS" isDone = {true} />
+                <TodoListTask title = "React" isDone = {false} />
             </div>
         );
     }
