@@ -1,16 +1,19 @@
 import React from "react";
 
 class TodoListTask extends React.Component {
-    onIsDOneChanged = (e) => {
+    onIsDoneChanged = (e) => {
         this.props.changeStatus(this.props.task, e.currentTarget.checked)
     }
     render = (props) => {
+        let taskIsDoneClass = this.props.task.isDone
+            ?"todoList-task done"
+            :"todoList-task";
         return (
-            <div className="todoList-task">
+            <div className={taskIsDoneClass}>
                 <input
                     type="checkbox"
                     checked={this.props.task.isDone}
-                    onChange={this.onIsDOneChanged}
+                    onChange={this.onIsDoneChanged}
                 />
                 <span>{this.props.title}, {this.props.priority}</span>
             </div>
