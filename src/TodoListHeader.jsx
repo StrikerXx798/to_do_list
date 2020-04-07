@@ -1,47 +1,51 @@
-import React from "react";
+import React from 'react';
+import './App.css';
 
 class TodoListHeader extends React.Component {
-    newTaskTitleRef = React.createRef();
-
     state = {
         error: false,
         title: ""
-    };
+    }
 
     onAddTaskClick = () => {
-        let newText = this.newTaskTitleRef.current.value;
-        this.newTaskTitleRef.current.value = '';
-        if (newText === '')  {
-            this.setState({error: true})}
-        else {
-            this.setState({error: false})
-            this.props.addText(newText)
-        };
-    };
+        let newText = this.state.title;
+        this.setState({title: ""});
 
-    onTitleChange = () => {
-        this.setState({error: false});
-    };
+        if (newText === "") {
+            this.setState({error: true});
+        } else {
+            this.setState({error: false});
+            this.props.addTask(newText);
+        }
+    }
+
+    onTitleChanged = (e) => {
+        this.setState({
+            error: false,
+            title: e.currentTarget.value
+        });
+    }
 
     onKeyPress = (e) => {
-       if(e.key === "Enter") {
-           this.onAddTaskClick();
-       }
-    };
+        if (e.key === "Enter") {
+            this.onAddTaskClick()
+        }
+    }
 
-    render = (props) => {
+
+    render = () => {
+        let classNameForInput = this.state.error ? "error" : "";
+
         return (
             <div className="todoList-header">
                 <h3 className="todoList-header__title">What to Learn</h3>
                 <div className="todoList-newTaskForm">
-                    <input className={this.state.error === true ? "error": ''}
-                           ref={this.newTaskTitleRef}
-                           type="text"
-                           placeholder="New task name"
-                           onChange={this.onTitleChange}
+                    <input className={classNameForInput} type="text" placeholder="New task name"
+                           onChange={this.onTitleChanged}
                            onKeyPress={this.onKeyPress}
-                           value={this.state.title}/>
-                    <button onClick = {this.onAddTaskClick} >Add</button>
+                           value={this.state.title}
+                    />
+                    <button onClick={this.onAddTaskClick}>Add</button>
                 </div>
             </div>
         );
@@ -49,3 +53,4 @@ class TodoListHeader extends React.Component {
 }
 
 export default TodoListHeader;
+
