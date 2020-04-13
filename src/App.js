@@ -22,7 +22,17 @@ class App extends React.Component {
     }
 
     restoreState = () => {
-
+        let state = this.state
+        let setAsString = localStorage.getItem("our-state");
+        if (setAsString) {
+           state = JSON.parse(setAsString);
+        }
+        this.setState(state, () => {
+            this.state.tasks.forEach(task => {
+                if (task.id >= this.newTaskId)
+                    this.newTaskId = task.id + 1
+            })
+        });
     }
 
     addTask = (newText) => {
