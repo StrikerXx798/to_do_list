@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 
-class TodoListHeader extends React.Component {
+class AddNewItemForm extends React.Component {
     state = {
         error: false,
         title: ""
@@ -15,7 +15,7 @@ class TodoListHeader extends React.Component {
             this.setState({error: true});
         } else {
             this.setState({error: false});
-            this.props.addTask(newText);
+            this.props.addItem(newText);
         }
     }
 
@@ -38,7 +38,6 @@ class TodoListHeader extends React.Component {
 
         return (
             <div className="todoList-header">
-                <h3 className="todoList-header__title">What to Learn</h3>
                 <div className="todoList-newTaskForm">
                     <input className={classNameForInput} type="text" placeholder="New task name"
                            onChange={this.onTitleChanged}
@@ -52,5 +51,5 @@ class TodoListHeader extends React.Component {
     }
 }
 
-export default TodoListHeader;
+export default AddNewItemForm;
 
