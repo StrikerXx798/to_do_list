@@ -2,64 +2,102 @@ import React from 'react';
 import './App.css';
 import TodoList from "./TodoList";
 import AddNewItemForm from "./AddNewItemForm";
+import {connect} from "react-redux";
+import {addTodolistAC} from "./reducer";
 
 class App extends React.Component {
-    componentDidMount() {
-        this.restoreState()
-    }
 
     nextTodoListId = 0;
 
     state = {
-        todoLists: [
-            {id: ' 1', title: 'Jenya'},
-            {id: ' 2', title: 'Lera'},
-            {id: ' 3', title: 'Anton'}
-            ],
-        filterValue: "All"
-    };
+        todolists: []
+    }
+
+    addTodoList = (title) => {
+
+        let newTodoList = {
+            id: this.nextTodoListId,
+            title: title,
+            tasks: []
+        }
+
+        this.props.addTodolist(newTodoList);/*
+
+        this.setState({todolists: [...this.state.todolists, newTodoList]}, () => {
+            this.saveState();
+        });
+
+        this.nextTodoListId++;*/
+
+
+    }
+
+    componentDidMount() {
+        this.restoreState();
+    }
+
 
     saveState = () => {
-        localStorage.setItem ("our-state" + this.props.id, JSON.stringify(this.state))
+        // переводим объект в строку
+        let stateAsString = JSON.stringify(this.state);
+        // сохраняем нашу строку в localStorage под ключом "our-state"
+        localStorage.setItem("todolists-state", stateAsString);
     }
 
     restoreState = () => {
-        let state = this.state
-        let setAsString = localStorage.getItem("todolists");
-        if (setAsString) {
-            state = JSON.parse(setAsString);
+        // объявляем наш стейт стартовый
+        let state = this.state;
+        // считываем сохранённую ранее строку из localStorage
+        let stateAsString = localStorage.getItem("todolists-state");
+        // а вдруг ещё не было ни одного сохранения?? тогда будет null.
+        // если не null, тогда превращаем строку в объект
+        if (stateAsString !== null) {
+            state = JSON.parse(stateAsString);
         }
+        // устанавливаем стейт (либо пустой, либо восстановленный) в стейт
         this.setState(state, () => {
-            this.state.todoLists.forEach(todoLists => {
-                if (todoLists.id >= this.nextTodoListId)
-                    this.nextTodoListId = todoLists.id + 1
+            this.state.todolists.forEach(t => {
+                if (t.id >= this.nextTodoListId) {
+                    this.nextTodoListId = t.id + 1;
+                }
             })
         });
     }
 
-    addTodoList = (newTodoListName) => {
-        let newTodoList = {
-            title: newTodoListName,
-            id: this.nextTodoListId
-        }
-        this.nextTodoListId++
-        this.setState({todoLists:[...this.state.todoLists, newTodoList]}, this.saveState)
-    }
-
     render = () => {
-        let todoLists = this.state.todoLists.map(t => {
-            return <TodoList id={t.id} title={t.title}/>
-        })
+        const todolists = this.props
+            .todolists
+            .map(tl => <TodoList id={tl.id} title={tl.title} tasks={tl.tasks} />)
+
         return (
             <>
-                <AddNewItemForm addItem={this.addTodoList}/>
+                <div>
+                    <AddNewItemForm addItem={this.addTodoList}/>
+                </div>
                 <div className="App">
-                    {todoLists}
+                    {todolists}
                 </div>
             </>
-        )
+        );
     }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+    return {
+        todolists: state.todolists
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        addTodolist: (newTodolist) => {
+            const action = addTodolistAC(newTodolist);
+            dispatch(action)
+        }
+
+    }
+}
+
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(App);
+export default ConnectedApp;
 
