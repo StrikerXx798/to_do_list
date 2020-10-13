@@ -36,7 +36,7 @@ export const Login = () => {
     })
 
     if (isLoggedIn) {
-        return <Redirect to={"/"} />
+        return <Redirect to={"/to_do_list"} />
     }
 
 
