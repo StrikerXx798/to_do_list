@@ -62,8 +62,8 @@ function App({demo = false}: PropsType) {
                     {status === 'loading' && <LinearProgress/>}
                 </AppBar>
                 <Container fixed>
-                    <Route exact path={'/to_do_list/'} render={() => <TodolistsList demo={demo}/>}/>
-                    <Route path={'/to_do_list/login'} render={() => <Login/>}/>
+                    <Route exact path={'/to_do_list'} render={() => <TodolistsList demo={demo}/>}/>
+                    <Route path={'/login'} render={() => <Login/>}/>
                 </Container>
             </div>
         </BrowserRouter>
